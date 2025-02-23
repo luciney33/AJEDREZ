@@ -10,6 +10,7 @@ public class Torre extends Pieza{
         }
     }
 
+<<<<<<< HEAD
     @Override
     public boolean validoMovimiento(Movimiento mov, Tablero tablero) {
         if (mov.esHorizontal() || mov.esVertical()) { // La torre solo se mueve en línea recta
@@ -17,11 +18,22 @@ public class Torre extends Pieza{
                 return true;
             } else {
                 System.out.println("ERROR: Movimiento bloqueado, hay piezas en el camino.");
+=======
+
+    @Override
+    public boolean validoMovimiento(Movimiento mov, Tablero tablero) {
+        if (mov.esHorizontal() || mov.esVertical()) { // 🔹 La torre solo se mueve en línea recta
+            if (!tablero.hayPiezasEntre(mov)) { // 🔹 Evita que atraviese piezas
+                return true;
+            } else {
+                System.out.println("❌ Movimiento bloqueado: Hay piezas en el camino.");
+>>>>>>> 6cf971d51430ebfe80295f177d90df608bfa0602
             }
         }
         return false;
     }
 
+<<<<<<< HEAD
     @Override
     public String toString() {
         String colorTexto;
@@ -32,4 +44,6 @@ public class Torre extends Pieza{
         }
         return "Torre"+ colorTexto + " (" + getNombre() + ")";
     }
+=======
+>>>>>>> 6cf971d51430ebfe80295f177d90df608bfa0602
 }

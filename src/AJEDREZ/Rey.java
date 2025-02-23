@@ -12,6 +12,7 @@ public class Rey extends Pieza{
 
     @Override
     public boolean validoMovimiento(Movimiento mov, Tablero tablero) {
+<<<<<<< HEAD
         // Calculamos la diferencia absoluta entre la posición inicial y final
         int saltoFila = Math.abs(mov.saltoVertical());
         int saltoColumna = Math.abs(mov.saltoHorizontal());
@@ -24,6 +25,19 @@ public class Rey extends Pieza{
         }
 
         // El Rey solo puede moverse 1 casilla en cualquier dirección
+=======
+        int saltoFila = Math.abs(mov.saltoVertical());
+        int saltoColumna = Math.abs(mov.saltoHorizontal());
+
+        // 🔹 Verificamos si hay una pieza propia en la casilla final
+        Pieza destino = tablero.devuelvePieza(mov.getPosFinal());
+        if (destino != null && destino.getColor() == this.getColor()) {
+            System.out.println("❌ Movimiento inválido: No puedes ocupar una casilla con tu propia pieza.");
+            return false;
+        }
+
+        // 🔹 El Rey solo puede moverse 1 casilla en cualquier dirección
+>>>>>>> 6cf971d51430ebfe80295f177d90df608bfa0602
         if (saltoFila <= 1 && saltoColumna <= 1) {
             return true;
         }
@@ -31,6 +45,7 @@ public class Rey extends Pieza{
         return false;
     }
 
+<<<<<<< HEAD
     @Override
     public String toString() {
         String colorTexto;
@@ -41,4 +56,6 @@ public class Rey extends Pieza{
         }
         return "Rey"+ colorTexto + " (" + getNombre() + ")";
     }
+=======
+>>>>>>> 6cf971d51430ebfe80295f177d90df608bfa0602
 }

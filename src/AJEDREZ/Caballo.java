@@ -10,6 +10,7 @@ public class Caballo extends Pieza{
         }
     }
 
+<<<<<<< HEAD
     public boolean validoMovimiento(Movimiento mov, Tablero tablero) {
         // Calculamos la diferencia absoluta en las filas y columnas
         int saltoHorizontal = Math.abs(mov.saltoHorizontal());
@@ -35,5 +36,15 @@ public class Caballo extends Pieza{
             colorTexto = "Negro";
         }
         return "Caballo"+ colorTexto + " (" + getNombre() + ")";
+=======
+    @Override
+    public boolean validoMovimiento(Movimiento mov, Tablero tablero) {
+        boolean respuesta = false;
+        if ((Math.abs(mov.saltoHorizontal())==2 && Math.abs(mov.saltoVertical())==1) ||
+                (Math.abs(mov.saltoHorizontal())==1 && Math.abs(mov.saltoVertical())==2)){
+            respuesta = true;
+        }
+        return respuesta;
+>>>>>>> 6cf971d51430ebfe80295f177d90df608bfa0602
     }
 }
