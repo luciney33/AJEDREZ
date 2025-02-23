@@ -12,7 +12,6 @@ public class Dama extends Pieza{
 
     @Override
     public boolean validoMovimiento(Movimiento mov, Tablero tablero) {
-<<<<<<< HEAD
         // Si se mueve en línea recta o en diagonal
         if (mov.esVertical() || mov.esHorizontal() || mov.esDiagonal()) {
             // Verifica si hay piezas en el camino
@@ -32,12 +31,5 @@ public class Dama extends Pieza{
             colorTexto = "Negro";
         }
         return "Dama"+ colorTexto + " (" + getNombre() + ")";
-=======
-        boolean respuesta =false;
-        if (mov.esVertical()||mov.esHorizontal()||mov.esDiagonal()){
-            respuesta= true;
-        }
-        return respuesta;
->>>>>>> 6cf971d51430ebfe80295f177d90df608bfa0602
     }
 }
