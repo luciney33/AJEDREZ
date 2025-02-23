@@ -12,40 +12,26 @@ public class Rey extends Pieza{
 
     @Override
     public boolean validoMovimiento(Movimiento mov, Tablero tablero) {
-<<<<<<< HEAD
         // Calculamos la diferencia absoluta entre la posición inicial y final
-        int saltoFila = Math.abs(mov.saltoVertical());
-        int saltoColumna = Math.abs(mov.saltoHorizontal());
+        int saltoFila = Math.abs(mov.saltoVertical());   // Diferencia en filas
+        int saltoColumna = Math.abs(mov.saltoHorizontal()); // Diferencia en columnas
 
-        // Verificamos si hay una pieza propia en la casilla final
+        // Verificamos si en la casilla final hay una pieza del mismo color
         Pieza destino = tablero.devuelvePieza(mov.getPosFinal());
         if (destino != null && destino.getColor() == this.getColor()) {
             System.out.println("ERROR: Movimiento inválido, no puedes ocupar una casilla con tu propia pieza.");
-            return false;// Si hay una pieza aliada, el movimiento no es válido
+            return false; // Si hay una pieza aliada, el movimiento no es válido
         }
 
-        // El Rey solo puede moverse 1 casilla en cualquier dirección
-=======
-        int saltoFila = Math.abs(mov.saltoVertical());
-        int saltoColumna = Math.abs(mov.saltoHorizontal());
-
-        // 🔹 Verificamos si hay una pieza propia en la casilla final
-        Pieza destino = tablero.devuelvePieza(mov.getPosFinal());
-        if (destino != null && destino.getColor() == this.getColor()) {
-            System.out.println("❌ Movimiento inválido: No puedes ocupar una casilla con tu propia pieza.");
-            return false;
-        }
-
-        // 🔹 El Rey solo puede moverse 1 casilla en cualquier dirección
->>>>>>> 6cf971d51430ebfe80295f177d90df608bfa0602
+        // Un rey solo puede moverse una casilla en cualquier dirección (vertical, horizontal o diagonal)
         if (saltoFila <= 1 && saltoColumna <= 1) {
-            return true;
+            return true; // Movimiento permitido
         }
 
-        return false;
+        return false; // Si no cumple las condiciones anteriores, el movimiento es inválido
     }
 
-<<<<<<< HEAD
+
     @Override
     public String toString() {
         String colorTexto;
@@ -56,6 +42,6 @@ public class Rey extends Pieza{
         }
         return "Rey"+ colorTexto + " (" + getNombre() + ")";
     }
-=======
->>>>>>> 6cf971d51430ebfe80295f177d90df608bfa0602
+
+
 }
