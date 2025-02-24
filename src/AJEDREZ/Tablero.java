@@ -1,7 +1,5 @@
 package AJEDREZ;
 
-import java.util.Scanner;
-
 public class Tablero {
     private Pieza Tablero[][] = new Pieza[8][8];
 
@@ -10,7 +8,6 @@ public class Tablero {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 Tablero[i][j] = null;
-                System.out.println("sisiisisu");
             }
         }
 
@@ -61,81 +58,51 @@ public class Tablero {
     }
 
     /**
-     * método que sirve para mover las piezas y verificar los movimientos
-     * @param mov movimiento definido por la posición inicial y final...
+     * Método que mueve una pieza en el tablero si el movimiento es válido.
+     * @param mov Movimiento que contiene la posición inicial y final.
+     * @return true si el movimiento se realizó correctamente, false si no fue válido.
      */
-    public void mover(Movimiento mov) {
+    public boolean mover(Movimiento mov) {
+        boolean movimientoValido = false; // Controla si el movimiento es válido
+        boolean finDelJuego = false; // Indica si el juego debe finalizar
+
         Pieza pieza = devuelvePieza(mov.getPosInicial());
         Pieza destino = devuelvePieza(mov.getPosFinal());
 
-        if (pieza == null) {
-            System.out.println("ERROR: No hay pieza en la posición inicial.");
-            return;
-        }
+        if (pieza != null) { // Si hay una pieza en la posición inicial
+            if (destino == null || destino.getColor() != pieza.getColor()) { // Si la casilla final está vacía o tiene una pieza enemiga
+                if (pieza.validoMovimiento(mov, this)) { // Si el movimiento es válido
 
-        // Verifica si la casilla final contiene una pieza aliada
-        if (destino != null && destino.getColor() == pieza.getColor()) {
-            System.out.println("ERROR: No puedes capturar tu propia pieza en " + mov.getPosFinal());
-            return;
-        }
+                    // 🔹 Verifica si se ha capturado al Rey comparando nombres en vez de símbolos
+                    if (destino != null) {
+                        String nombreDestino = destino.getNombre();
+                        if (nombreDestino.equals("\u2654") || nombreDestino.equals("\u265A")) {
+                            finDelJuego = true; // Se ha capturado el Rey
+                        }
+                        quitaPieza(mov.getPosFinal()); // Captura la pieza enemiga
+                    }
 
+                    // Se realiza el movimiento
+                    ponPieza(pieza, mov.getPosFinal());
+                    quitaPieza(mov.getPosInicial());
 
-        // Validar si el movimiento es correcto para esa pieza
-        if (!pieza.validoMovimiento(mov, this)) {
-            System.out.println("ERROR: Movimiento inválido para la pieza.");
-            return;
-        }
+                    // Se cambia el turno tras un movimiento válido
+                    Juego.cambiarTurno();
 
-        // Si hay una pieza enemiga, se captura (la eliminamos del tablero)
-        if (destino != null && destino.getColor() != pieza.getColor()) {
-            System.out.println("Capturaste una pieza enemiga en " + mov.getPosFinal());
-            quitaPieza(mov.getPosFinal());  // Elimina la pieza enemiga
-        }
-
-        // Verificar si el peón ha llegado a la última fila y permitir promoción
-        if (pieza instanceof Peon) {
-            int filaFinal = mov.getPosFinal().getFila();
-
-            if ((pieza.getColor() && filaFinal == 0) || (!pieza.getColor() && filaFinal == 7)) {
-                Scanner scanner = new Scanner(System.in);
-                System.out.println("Tu peón ha llegado al final ¿En qué pieza quieres convertirlo?");
-                System.out.print("Introduce D (Dama), T (Torre), A (Alfil) o C (Caballo): ");
-
-                String opc = scanner.nextLine().toUpperCase();
-                switch (opc) {
-                    case "D":
-                        pieza = new Dama(pieza.getColor());
-                        break;
-                    case "T":
-                        pieza = new Torre(pieza.getColor());
-                        break;
-                    case "A":
-                        pieza = new Alfil(pieza.getColor());
-                        break;
-                    case "C":
-                        pieza = new Caballo(pieza.getColor());
-                        break;
-                    default:
-                        System.out.println("ERROR: Opción no válida, el peón se convertirá en una Dama por defecto.");
-                        pieza = new Dama(pieza.getColor());
+                    movimientoValido = true; // Se marca como movimiento válido
                 }
             }
         }
 
-        /**
-         * ponPieza mueve la pieza
-         * quitaPieza borra la pieza de la posición original
-         */
-        ponPieza(pieza, mov.getPosFinal());
-        quitaPieza(mov.getPosInicial());
+        // Si el juego ha terminado, se notifica (esto se manejará en la interfaz gráfica FX)
+        if (finDelJuego) {
+            // Aquí en lugar de imprimir, podemos hacer que el método devuelva un estado especial o lo notifique de otra forma
+            System.out.println("¡El Rey ha sido capturado! Fin del juego.");
+        }
 
-        System.out.println("Movimiento realizado.");
-
-        /**
-         * Cambia el turno después del movimiento
-         */
-        Juego.cambiarTurno();
+        return movimientoValido; // Devuelve si el movimiento fue válido o no
     }
+
 
     /**
      * @param fila
@@ -156,17 +123,18 @@ public class Tablero {
 
 
     /**
-     * @param mov
-     * @return no hay piezas bloqueando el camino
+     * Verifica si hay piezas bloqueando el camino en un movimiento dado.
+     * @param mov Movimiento que se quiere realizar
+     * @return true si hay piezas en el camino, false si el camino está libre.
      */
     public boolean hayPiezasEntre(Movimiento mov) {
-        /**
-         * se obtienen las coordenadas de la posición inicial y final
-         */
+        // Obtener coordenadas iniciales y finales
         int filaInicio = mov.getPosInicial().getFila();
         int columnaInicio = mov.getPosInicial().getColumna();
         int filaFinal = mov.getPosFinal().getFila();
         int columnaFinal = mov.getPosFinal().getColumna();
+
+        boolean bloqueo = false; // Variable booleana para indicar si hay piezas bloqueando
 
         // Verificar movimiento vertical (misma columna)
         if (columnaInicio == columnaFinal) {
@@ -177,15 +145,12 @@ public class Tablero {
                 paso = -1; // Movimiento hacia arriba
             }
 
-            // Recorre las casillas entre la posición inicial y final
             for (int fila = filaInicio + paso; fila != filaFinal; fila += paso) {
-                if (Tablero[fila][columnaInicio] != null) { // Si hay una pieza en el camino
-                    System.out.println("ERROR: Hay una pieza bloqueando en: (" + fila + "," + columnaInicio + ")");
-                    return true; // Hay una obstrucción
+                if (Tablero[fila][columnaInicio] != null) {
+                    bloqueo = true;
                 }
             }
         }
-
         // Verificar movimiento horizontal (misma fila)
         else if (filaInicio == filaFinal) {
             int paso;
@@ -195,26 +160,22 @@ public class Tablero {
                 paso = -1; // Movimiento hacia la izquierda
             }
 
-            // Recorre las casillas entre la posición inicial y final
             for (int columna = columnaInicio + paso; columna != columnaFinal; columna += paso) {
-                if (Tablero[filaInicio][columna] != null) { // Si hay una pieza en el camino
-                    System.out.println("ERROR: Hay una pieza bloqueando en: (" + filaInicio + "," + columna + ")");
-                    return true; // Hay una obstrucción
+                if (Tablero[filaInicio][columna] != null) {
+                    bloqueo = true;
                 }
             }
         }
-
         // Verificar movimiento diagonal
         else if (mov.esDiagonal()) {
             int pasoFila;
-            int pasoColumna;
-
             if (filaFinal > filaInicio) {
                 pasoFila = 1;
             } else {
                 pasoFila = -1;
             }
 
+            int pasoColumna;
             if (columnaFinal > columnaInicio) {
                 pasoColumna = 1;
             } else {
@@ -224,18 +185,18 @@ public class Tablero {
             int fila = filaInicio + pasoFila;
             int columna = columnaInicio + pasoColumna;
 
-            // Recorre las casillas entre la posición inicial y final
             while (fila != filaFinal && columna != columnaFinal) {
-                if (Tablero[fila][columna] != null) { // Si hay una pieza en el camino
-                    System.out.println("ERROR: Hay una pieza bloqueando en: (" + fila + "," + columna + ")");
-                    return true; // Hay una obstrucción
+                if (Tablero[fila][columna] != null) {
+                    bloqueo = true;
                 }
                 fila += pasoFila;
                 columna += pasoColumna;
             }
         }
-        return false;
+
+        return bloqueo;
     }
+
 
 
     public void ponPieza(Pieza figura, int fila, int columna) {
