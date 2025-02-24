@@ -3,18 +3,15 @@ package AJEDREZ;
 import java.util.Scanner;
 
 public class Tablero {
-    // 8x8 que representa el tablero de ajedrez
     private Pieza Tablero[][] = new Pieza[8][8];
 
     Tablero() {
-        // Se recorre el tablero para asegurarse de que todas las casillas inicien vacías (null)
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 Tablero[i][j] = null;
             }
         }
 
-        // Colocamos las piezas negras en la fila 0 (torres, caballos, alfiles, dama y rey)
         Tablero[0][0] = new Torre(false);
         Tablero[0][1] = new Caballo(false);
         Tablero[0][2] = new Alfil(false);
@@ -24,12 +21,10 @@ public class Tablero {
         Tablero[0][6] = new Caballo(false);
         Tablero[0][7] = new Torre(false);
 
-        // Colocamos los peones negros en la fila 1
         for (int i = 0; i < 8; i++) {
             Tablero[1][i] = new Peon(false);
         }
 
-        // Colocamos las piezas blancas en la fila 7 (torres, caballos, alfiles, dama y rey)
         Tablero[7][0] = new Torre(true);
         Tablero[7][1] = new Caballo(true);
         Tablero[7][2] = new Alfil(true);
@@ -39,32 +34,37 @@ public class Tablero {
         Tablero[7][6] = new Caballo(true);
         Tablero[7][7] = new Torre(true);
 
-        // Colocamos los peones blancos en la fila 6
         for (int i = 0; i < 8; i++) {
             Tablero[6][i] = new Peon(true);
         }
     }
 
+    /**
+     * metodo para visionar el tablero
+     */
     public void pintarTablero() {
-        System.out.println("  A  B  C  D  E  F  G  H"); // Encabezado de columnas
+        System.out.println("  A  B  C  D  E  F  G  H");
         for (int i = 0; i < 8; i++) {
-            System.out.print((8 - i) + " "); // Número de fila (8 a 1)
+            System.out.print((8 - i) + " ");
             for (int j = 0; j < 8; j++) {
                 if (Tablero[i][j] != null) {
                     System.out.print(Tablero[i][j].getNombre() + "  ");
                 } else {
-                    System.out.print(".   "); // Ahora sí imprimimos correctamente los puntos
+                    System.out.print(".   ");
                 }
             }
-            System.out.println(); // Salto de línea para la siguiente fila
+            System.out.println();
         }
         System.out.println();
     }
 
-
+    /**
+     * método que sirve para mover las piezas y verificar los movimientos
+     * @param mov movimiento definido por la posición inicial y final...
+     */
     public void mover(Movimiento mov) {
-        Pieza pieza = devuelvePieza(mov.getPosInicial()); // Obtener la pieza en la posición inicial
-        Pieza destino = devuelvePieza(mov.getPosFinal()); // Obtener la pieza en la posición final
+        Pieza pieza = devuelvePieza(mov.getPosInicial());
+        Pieza destino = devuelvePieza(mov.getPosFinal());
 
         if (pieza == null) {
             System.out.println("ERROR: No hay pieza en la posición inicial.");
@@ -77,12 +77,6 @@ public class Tablero {
             return;
         }
 
-        // No se permite capturar al rey porque en ajedrez no se puede,
-        // aunque no implementé jaque ni jaque mate.
-        if (destino != null && destino instanceof Rey) {
-            System.out.println("ERROR: No puedes capturar al rey.");
-            return;
-        }
 
         // Validar si el movimiento es correcto para esa pieza
         if (!pieza.validoMovimiento(mov, this)) {
@@ -102,11 +96,11 @@ public class Tablero {
 
             if ((pieza.getColor() && filaFinal == 0) || (!pieza.getColor() && filaFinal == 7)) {
                 Scanner scanner = new Scanner(System.in);
-                System.out.println("¡Tu peón ha llegado al final! ¿En qué pieza quieres convertirlo? (D/T/A/C)");
+                System.out.println("Tu peón ha llegado al final ¿En qué pieza quieres convertirlo?");
                 System.out.print("Introduce D (Dama), T (Torre), A (Alfil) o C (Caballo): ");
 
-                String eleccion = scanner.nextLine().toUpperCase();
-                switch (eleccion) {
+                String opc = scanner.nextLine().toUpperCase();
+                switch (opc) {
                     case "D":
                         pieza = new Dama(pieza.getColor());
                         break;
@@ -126,16 +120,26 @@ public class Tablero {
             }
         }
 
-        ponPieza(pieza, mov.getPosFinal());  // Mueve la pieza
-        quitaPieza(mov.getPosInicial());     // Borra la pieza de la posición original
+        /**
+         * ponPieza mueve la pieza
+         * quitaPieza borra la pieza de la posición original
+         */
+        ponPieza(pieza, mov.getPosFinal());
+        quitaPieza(mov.getPosInicial());
 
         System.out.println("Movimiento realizado.");
 
-        // Cambia el turno después del movimiento
+        /**
+         * Cambia el turno después del movimiento
+         */
         Juego.cambiarTurno();
     }
 
-
+    /**
+     * @param fila
+     * @param columna
+     * @return true si hay pieza
+     */
     public boolean hayPieza(int fila, int columna) {
         boolean respuesta = false;
         if (Tablero[fila][columna] != null) {
@@ -149,8 +153,14 @@ public class Tablero {
     }
 
 
+    /**
+     * @param mov
+     * @return no hay piezas bloqueando el camino
+     */
     public boolean hayPiezasEntre(Movimiento mov) {
-        // Se obtienen las coordenadas de la posición inicial y final
+        /**
+         * se obtienen las coordenadas de la posición inicial y final
+         */
         int filaInicio = mov.getPosInicial().getFila();
         int columnaInicio = mov.getPosInicial().getColumna();
         int filaFinal = mov.getPosFinal().getFila();
@@ -222,8 +232,7 @@ public class Tablero {
                 columna += pasoColumna;
             }
         }
-
-        return false; // No hay piezas bloqueando el camino
+        return false;
     }
 
 

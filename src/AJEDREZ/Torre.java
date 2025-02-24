@@ -13,7 +13,10 @@ public class Torre extends Pieza {
 
     @Override
     public boolean validoMovimiento(Movimiento mov, Tablero tablero) {
-        if (mov.esHorizontal() || mov.esVertical()) { // La torre solo se mueve en línea recta
+        /**
+         * la torre solo se mueve en línea recta
+         */
+        if (mov.esHorizontal() || mov.esVertical()) {
             if (!tablero.hayPiezasEntre(mov)) { // Evita que atraviese piezas
                 return true;
             } else {

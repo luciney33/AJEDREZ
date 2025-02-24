@@ -12,6 +12,7 @@ public class Peon extends Pieza {
 
     @Override
     public boolean validoMovimiento(Movimiento mov, Tablero tablero) {
+        boolean valido = false;
         // Definimos la dirección y la fila inicial dependiendo del color del peón
         int direccion;
         int filaInicio;
