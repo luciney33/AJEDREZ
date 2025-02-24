@@ -3,6 +3,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        System.out.println("Cambiando cosas");
         Scanner scanner = new Scanner(System.in);
         Tablero tablero = new Tablero();
         boolean turnoBlancas = true; // Empiezan las blancas
