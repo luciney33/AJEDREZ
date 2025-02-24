@@ -13,20 +13,20 @@ public class Torre extends Pieza {
 
     @Override
     public boolean validoMovimiento(Movimiento mov, Tablero tablero) {
-        boolean esValido = false; // Variable para indicar si el movimiento es válido
+        boolean esValido = false;
 
-        // La torre solo se mueve en línea recta: horizontal o vertical
+        //torre solo se mueve en línea recta, horizontal o vertical
         if (mov.esVertical() || mov.esHorizontal()) {
-            if (!tablero.hayPiezasEntre(mov)) { // Verifica que no haya piezas bloqueando el camino
+            if (!tablero.hayPiezasEntre(mov)) { //verificar que no haya piezas bloqueando el camino
                 Pieza piezaDestino = tablero.devuelvePieza(mov.getPosFinal());
 
-                // Puede moverse si la casilla está vacía o si hay una pieza enemiga
+                //puede moverse si la casilla esta vacia o si hay una pieza enemiga
                 if (piezaDestino == null || piezaDestino.getColor() != this.getColor()) {
                     esValido = true;
                 }
             }
         }
-        return esValido; // Devuelve si el movimiento es válido o no
+        return esValido;
     }
 
 

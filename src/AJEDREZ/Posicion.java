@@ -1,14 +1,11 @@
 package AJEDREZ;
 
-//La clase Posicion representa una posición en el tablero de ajedrez,utilizando coordenadas de fila y columna.
 public class Posicion {
-    private int fila;     // Almacena la fila de la posición en el tablero
-    private int columna;  // Almacena la columna de la posición en el tablero
+    private int fila;
+    private int columna;
 
-    //Constructor vacío: permite crear una posición sin valores iniciales.
     public Posicion() {}
 
-    //Constructor que inicializa la posición con valores específicos de fila y columna.
     public Posicion(int fila, int columna) {
         this.fila = fila;
         this.columna = columna;

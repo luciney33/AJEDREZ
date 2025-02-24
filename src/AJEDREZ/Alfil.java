@@ -13,19 +13,19 @@ public class Alfil extends Pieza {
 
     @Override
     public boolean validoMovimiento(Movimiento mov, Tablero tablero) {
-        boolean esValido = false; // Variable para indicar si el movimiento es válido
+        boolean esValido = false;
 
-        if (mov.esDiagonal()) { // El alfil solo se mueve en diagonal
-            if (!tablero.hayPiezasEntre(mov)) { // Verifica que el camino esté libre
+        if (mov.esDiagonal()) { //el alfil solo se mueve en diagonal
+            if (!tablero.hayPiezasEntre(mov)) {
                 Pieza piezaDestino = tablero.devuelvePieza(mov.getPosFinal());
 
-                // Si la casilla destino está vacía o contiene una pieza enemiga, el movimiento es válido
+                //si la casilla destino está vacía o contiene una pieza enemiga, el movimiento es valido
                 if (piezaDestino == null || piezaDestino.getColor() != this.getColor()) {
                     esValido = true;
                 }
             }
         }
-        return esValido; // Devuelve si el movimiento es válido o no
+        return esValido;
     }
 
 

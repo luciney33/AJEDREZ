@@ -1,4 +1,5 @@
 package AJEDREZ;
+import java.util.Scanner;
 
 public class Peon extends Pieza {
     public Peon(boolean color) {
@@ -12,21 +13,20 @@ public class Peon extends Pieza {
 
     @Override
     public boolean validoMovimiento(Movimiento mov, Tablero tablero) {
-        boolean esValido = false;  // Variable para almacenar si el movimiento es válido o no.
+        boolean esValido = false;
 
-        // Definimos la dirección y la fila inicial dependiendo del color del peón.
         int direccion;
         int filaInicio;
 
-        if (this.getColor()) { // Si el peón es blanco.
-            direccion = -1;  // Se mueve hacia arriba en el tablero.
-            filaInicio = 6;  // Los peones blancos comienzan en la fila 6.
-        } else { // Si el peón es negro.
-            direccion = 1;   // Se mueve hacia abajo en el tablero.
-            filaInicio = 1;  // Los peones negros comienzan en la fila 1.
+        if (this.getColor()) { //si el peón es blanco.
+            direccion = -1;  //se mueve hacia arriba
+            filaInicio = 6;  //los peones blancos comienzan en la fila 6.
+        } else { //si es negro.
+            direccion = 1;
+            filaInicio = 1;
         }
 
-        // Movimiento normal del peón
+        //movimiento del peón
         if (mov.esVertical() && mov.saltoHorizontal() == 0) {
             if (mov.saltoVertical() == direccion ||
                     (mov.getPosInicial().getFila() == filaInicio && mov.saltoVertical() == 2 * direccion && !tablero.hayPiezasEntre(mov))) {
@@ -34,14 +34,14 @@ public class Peon extends Pieza {
             }
         }
 
-        // Captura en diagonal
+        //come en diagonal
         if (mov.saltoVertical() == direccion && Math.abs(mov.saltoHorizontal()) == 1) {
             if (tablero.hayPieza(mov.getPosFinal()) && tablero.devuelvePieza(mov.getPosFinal()).getColor() != this.getColor()) {
                 esValido = true;
             }
         }
 
-        // Si el peón llega a la última fila, se promociona
+        //si el peon llega a la ultima fila, se promociona
         if (esValido && (mov.getPosFinal().getFila() == 0 || mov.getPosFinal().getFila() == 7)) {
             promocionar(tablero, mov.getPosFinal());
         }
@@ -52,7 +52,7 @@ public class Peon extends Pieza {
 
     private void promocionar(Tablero tablero, Posicion pos) {
         System.out.println("Promoción! ¿En qué pieza quieres convertir tu peón? (D - Dama, T - Torre, A - Alfil, C - Caballo)");
-        String eleccion = new java.util.Scanner(System.in).next().toUpperCase();
+        String eleccion = new Scanner(System.in).next().toUpperCase();
         Pieza nuevaPieza;
 
         switch (eleccion) {
@@ -61,11 +61,11 @@ public class Peon extends Pieza {
             case "A": nuevaPieza = new Alfil(getColor()); break;
             case "C": nuevaPieza = new Caballo(getColor()); break;
             default:
-                System.out.println("Elección inválida. Se promociona a Dama por defecto.");
+                System.out.println("Elección invalida. Se promociona a Dama por defecto");
                 nuevaPieza = new Dama(getColor());
         }
 
-        tablero.ponPieza(nuevaPieza, pos); // Reemplazamos el peón por la nueva pieza
+        tablero.ponPieza(nuevaPieza, pos); //reemplazamos el peon por la nueva pieza
     }
 
 

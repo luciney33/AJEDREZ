@@ -12,21 +12,20 @@ public class Rey extends Pieza{
 
     @Override
     public boolean validoMovimiento(Movimiento mov, Tablero tablero) {
-        boolean esValido = false; // Variable que indica si el movimiento es válido
+        boolean esValido = false;
 
-        // Calculamos la diferencia absoluta entre la posición inicial y final
-        int saltoFila = Math.abs(mov.saltoVertical());   // Diferencia en filas
-        int saltoColumna = Math.abs(mov.saltoHorizontal()); // Diferencia en columnas
+        int saltoFila = Math.abs(mov.saltoVertical());
+        int saltoColumna = Math.abs(mov.saltoHorizontal());
 
-        // Verificamos si en la casilla final hay una pieza del mismo color
+        //verificar si en la casilla final hay una pieza del mismo color
         Pieza destino = tablero.devuelvePieza(mov.getPosFinal());
 
-        if (destino == null || destino.getColor() != this.getColor()) { // La casilla está vacía o hay una pieza enemiga
-            if (saltoFila <= 1 && saltoColumna <= 1) { // El Rey solo se mueve 1 casilla en cualquier dirección
+        if (destino == null || destino.getColor() != this.getColor()) { //la casilla esta vacia o hay una pieza enemiga
+            if (saltoFila <= 1 && saltoColumna <= 1) { //Rey solo se mueve 1 casilla en cualquier dirección
                 esValido = true;
             }
         }
-        return esValido; // Devuelve si el movimiento es válido o no
+        return esValido;
     }
 
 

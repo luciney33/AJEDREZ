@@ -3,15 +3,15 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        Scanner lect = new Scanner(System.in);
         Tablero tablero = new Tablero();
-        boolean turnoBlancas = true; // Empiezan las blancas
-        boolean seguirJugando = true; // Variable para controlar si el juego continúa
-        String mensaje; // Almacena el mensaje del turno
+        boolean turnoBlancas = true; //empiezan las blancas
+        boolean seguirJugando = true; //variable para controlar si el juego continua
+        String mensaje; //almacena el mensaje del turno
 
         tablero.pintarTablero();
 
-        while (seguirJugando) { // Bucle del juego
+        while (seguirJugando) { //bucle del juego
             if (turnoBlancas) {
                 mensaje = "\nTurno de Blancas";
             } else {
@@ -20,36 +20,31 @@ public class Main {
             System.out.println(mensaje);
             System.out.println("Introduce tu movimiento (ejemplo: A2A4) o escribe RENDIRSE o EMPATE:");
 
-            String entrada = scanner.nextLine().toUpperCase(); // Convertimos a mayúsculas
-            mensaje = ""; // Reseteamos el mensaje
+            String entrada = lect.nextLine().toUpperCase();
+            mensaje = ""; //pa resetear el mensaje
 
-            //  rendirse
-            if (entrada.length() == 8 && entrada.charAt(0) == 'R' && entrada.charAt(1) == 'E' &&
-                    entrada.charAt(2) == 'N' && entrada.charAt(3) == 'D' && entrada.charAt(4) == 'I' &&
-                    entrada.charAt(5) == 'R' && entrada.charAt(6) == 'S' && entrada.charAt(7) == 'E') {
-
-                if (turnoBlancas) {
-                    System.out.println("Las blancas se han rendido. ¡Negras ganan!");
-                } else {
-                    System.out.println("Las negras se han rendido. ¡Blancas ganan!");
+            //comprobar si el jugador se rinde o quiere empate
+            if (entrada.equals("EMPATE")) { //empate
+                System.out.println("El jugador ha propuesto un empate. ¿Aceptas? (S/N)");
+                char respuesta = lect.next().toUpperCase().charAt(0);
+                if (respuesta == 'S') {
+                    System.out.println("Partida terminada en empate");
+                    break;
                 }
-                seguirJugando = false;
+                System.out.println("El oponente ha rechazado el empate. La partida continúa.");
             }
-            // empate
-            else if (entrada.length() == 6 && entrada.charAt(0) == 'T' && entrada.charAt(1) == 'A' &&
-                    entrada.charAt(2) == 'B' && entrada.charAt(3) == 'L' && entrada.charAt(4) == 'A' &&
-                    entrada.charAt(5) == 'S') {
-                System.out.println("¡Empate acordado! Fin del juego.");
-                seguirJugando = false;
+            else if (entrada.equals("RENDIRSE")) { //rendirse
+                System.out.println("El jugador se ha rendido. Fin de la partida!!!");
+                break;
             }
-            // Validación del movimiento
+            //los 4 caracteres de la entrada y los guardamos en variables
             else if (entrada.length() == 4) {
                 char columnaInicialChar = entrada.charAt(0);
                 char filaInicialChar = entrada.charAt(1);
                 char columnaFinalChar = entrada.charAt(2);
                 char filaFinalChar = entrada.charAt(3);
 
-                // Verificar si las letras son válidas (A-H) y los números (1-8)
+                //verificar si las letras son válidas A-H y los numeros 1-8
                 if ((columnaInicialChar >= 'A' && columnaInicialChar <= 'H') &&
                         (columnaFinalChar >= 'A' && columnaFinalChar <= 'H') &&
                         (filaInicialChar >= '1' && filaInicialChar <= '8') &&
@@ -72,9 +67,9 @@ public class Main {
                             if (pieza.validoMovimiento(mov, tablero)) {
                                 tablero.mover(mov);
                                 tablero.pintarTablero();
-                                turnoBlancas = !turnoBlancas; // Cambiar turno
+                                turnoBlancas = !turnoBlancas; //cambiar turno
                             } else {
-                                mensaje = "ERROR: Movimiento inválido.";
+                                mensaje = "ERROR: Movimiento invalido.";
                             }
                         } else {
                             mensaje = "ERROR: No es tu turno.";
@@ -83,7 +78,7 @@ public class Main {
                         mensaje = "ERROR: No hay pieza en la posición inicial.";
                     }
                 } else {
-                    mensaje = "ERROR: Movimiento fuera de los límites del tablero.";
+                    mensaje = "ERROR: Movimiento fuera de los limites del tablero.";
                 }
             } else {
                 mensaje = "ERROR: Entrada incorrecta. Debe tener 4 caracteres.";
@@ -93,8 +88,11 @@ public class Main {
                 System.out.println(mensaje);
             }
         }
-        scanner.close();
+        lect.close();
     }
 }
+
+
+
 
 

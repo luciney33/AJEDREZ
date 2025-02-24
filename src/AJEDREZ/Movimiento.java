@@ -34,4 +34,12 @@ public class Movimiento {
     public int saltoVertical() {
         return posFinal.getFila() - posInicial.getFila();
     }
+
+    @Override
+    public String toString() {
+        return "Movimiento{" +
+                "posInicial=" + posInicial +
+                ", posFinal=" + posFinal +
+                '}';
+    }
 }

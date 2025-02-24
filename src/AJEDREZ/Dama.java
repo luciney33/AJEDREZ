@@ -14,9 +14,9 @@ public class Dama extends Pieza{
     public boolean validoMovimiento(Movimiento mov, Tablero tablero) {
         boolean esValido = false;
 
-        // La dama puede moverse en línea recta (vertical u horizontal) o en diagonal
+        //la dama puede moverse en línea recta, vertical u horizontal o en diagonal
         if (mov.esVertical() || mov.esHorizontal() || mov.esDiagonal()) {
-            // Verifica si el camino está despejado
+            //verifica si el camino está despejado
             if (!tablero.hayPiezasEntre(mov)) {
                 esValido = true;
             }
