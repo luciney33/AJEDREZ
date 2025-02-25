@@ -1,6 +1,17 @@
 package AJEDREZ;
 
-public class Rey extends Pieza{
+/**
+ * Clase que representa un rey en el juego de ajedrez.
+ * El rey se mueve una sola casilla en cualquier dirección.
+ */
+public class Rey extends Pieza {
+
+    /**
+     * Constructor de la clase Rey.
+     * Asigna el símbolo Unicode correspondiente según el color.
+     *
+     * @param color true si la pieza es blanca, false si es negra
+     */
     public Rey(boolean color) {
         super(color);
         if (color==false){
@@ -10,6 +21,15 @@ public class Rey extends Pieza{
         }
     }
 
+    /**
+     * Verifica si el movimiento es válido para un rey.
+     * El rey puede moverse solo una casilla en cualquier dirección,
+     * siempre que la casilla de destino no contenga una pieza del mismo color.
+     *
+     * @param mov Objeto Movimiento que representa el movimiento deseado
+     * @param tablero El tablero actual de ajedrez
+     * @return true si el movimiento es válido, false en caso contrario
+     */
     @Override
     public boolean validoMovimiento(Movimiento mov, Tablero tablero) {
         boolean esValido = false;
@@ -28,8 +48,11 @@ public class Rey extends Pieza{
         return esValido;
     }
 
-
-
+    /**
+     * Devuelve una representación en texto del rey con su color y símbolo.
+     *
+     * @return Un String que describe la pieza
+     */
     @Override
     public String toString() {
         String colorTexto;
@@ -40,6 +63,4 @@ public class Rey extends Pieza{
         }
         return "Rey"+ colorTexto + " (" + getNombre() + ")";
     }
-
-
 }

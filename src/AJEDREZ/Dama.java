@@ -1,6 +1,17 @@
 package AJEDREZ;
 
-public class Dama extends Pieza{
+/**
+ * Clase que representa una dama (reina) en el juego de ajedrez.
+ * La dama puede moverse en línea recta vertical, horizontal o en diagonal.
+ */
+public class Dama extends Pieza {
+
+    /**
+     * Constructor de la clase Dama.
+     * Asigna el símbolo Unicode correspondiente según el color.
+     *
+     * @param color true si la pieza es blanca, false si es negra
+     */
     public Dama(boolean color) {
         super(color);
         if (color==false){
@@ -10,6 +21,14 @@ public class Dama extends Pieza{
         }
     }
 
+    /**
+     * Verifica si el movimiento es válido para una dama.
+     * El movimiento debe ser vertical, horizontal o diagonal sin piezas en el camino.
+     *
+     * @param mov Objeto Movimiento que representa el movimiento deseado
+     * @param tablero El tablero actual de ajedrez
+     * @return true si el movimiento es válido, false en caso contrario
+     */
     @Override
     public boolean validoMovimiento(Movimiento mov, Tablero tablero) {
         boolean esValido = false;
@@ -25,6 +44,11 @@ public class Dama extends Pieza{
         return esValido;
     }
 
+    /**
+     * Devuelve una representación en texto de la dama con su color y símbolo.
+     *
+     * @return Un String que describe la pieza
+     */
     @Override
     public String toString() {
         String colorTexto;
@@ -36,3 +60,4 @@ public class Dama extends Pieza{
         return "Dama"+ colorTexto + " (" + getNombre() + ")";
     }
 }
+
